@@ -18,7 +18,6 @@ export class ConvertPdfComponent implements OnDestroy {
   { }
 
   submit() {
-    console.log('submitting!');
     this.$sub = this.fileManagerService.urlToPdf(this.url)
       .subscribe(blob => {
         this.bytes = blob.size;

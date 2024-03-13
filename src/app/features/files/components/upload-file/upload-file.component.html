@@ -1,6 +1,6 @@
-<p>{{clean}}</p>
+ <p>{{clean | async}}</p>
 
-<form #uploadForm (submit)="submit()">
+<form #uploadForm>
     <input type="file" required (change)="onFileChange($event)"/>
-    <input type="submit"/>
+    <input type="button" (click)="submit()"/>
 </form>

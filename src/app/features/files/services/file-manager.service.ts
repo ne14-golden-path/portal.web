@@ -16,9 +16,10 @@ export class FileManagerService {
     private env: EnvService) {}
   
   public scan(file: File) {
-    const endpoint = `${this.baseUrl}/antivirus/scan`;
+    const endpoint = `${this.baseUrl}/pdf`;
     const formData = new FormData(); 
     formData.append('file', file, file.name);
+
     return this.httpClient.post<{}>(endpoint, formData).pipe(
       map(() => true),
       catchError(() => of(false))

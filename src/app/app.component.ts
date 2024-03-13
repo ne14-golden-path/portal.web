@@ -15,6 +15,5 @@ export class AppComponent {
   title = 'portal web';
 
   constructor(public env: EnvService) {
-    console.log(env.apiUrl);
   }
 }

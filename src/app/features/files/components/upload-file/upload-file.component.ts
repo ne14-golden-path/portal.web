@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FileManagerService } from '../../services/file-manager.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-upload-file',
   templateUrl: './upload-file.component.html',
   styleUrls: ['./upload-file.component.scss'],
   standalone: true,
+  imports: [AsyncPipe]
 })
 export class UploadFileComponent {
   
@@ -24,7 +26,6 @@ export class UploadFileComponent {
 
   submit() {
     if (this.file) {
-      console.log('submitting!');
       this.clean = this.fileManagerService.scan(this.file!);
     }
   }

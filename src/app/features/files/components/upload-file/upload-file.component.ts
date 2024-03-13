@@ -12,7 +12,7 @@ import { AsyncPipe } from '@angular/common';
 })
 export class UploadFileComponent {
   
-  public clean?: Observable<boolean>;
+  public fileUploadRef?: Observable<string>;
   
   private file?: File;
 
@@ -26,7 +26,7 @@ export class UploadFileComponent {
 
   submit() {
     if (this.file) {
-      this.clean = this.fileManagerService.scan(this.file!);
+      this.fileUploadRef = this.fileManagerService.beginPdfConversion(this.file!);
     }
   }
 }

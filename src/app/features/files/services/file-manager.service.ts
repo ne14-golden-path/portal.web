@@ -15,19 +15,10 @@ export class FileManagerService {
     private httpClient: HttpClient,
     private env: EnvService) {}
   
-  public scan(file: File) {
+  public beginPdfConversion(file: File) {
     const endpoint = `${this.baseUrl}/pdf`;
     const formData = new FormData(); 
     formData.append('file', file, file.name);
-
-    return this.httpClient.post<{}>(endpoint, formData).pipe(
-      map(() => true),
-      catchError(() => of(false))
-    );
-  }
-
-  public urlToPdf(url: string): Observable<Blob> {
-    const endpoint = `${this.baseUrl}/pdf/fromUrl`;
-    return this.httpClient.post(endpoint, null, { params: { url }, responseType: 'blob' });
+    return this.httpClient.post<string>(endpoint, formData);
   }
 }

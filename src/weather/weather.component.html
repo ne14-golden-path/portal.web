@@ -1,0 +1,8 @@
+<h1>Weather</h1>
+
+<button (click)="getForecast()">Get Forecast!</button>
+
+<div *ngFor="let f of forecasts">
+    <span>{{f.summary}}</span>
+    <span>{{f.date}}</span>
+</div>

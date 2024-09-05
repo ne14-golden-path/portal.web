@@ -1,5 +1,5 @@
 {
-  "name": "portal",
+  "name": "portal.web",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

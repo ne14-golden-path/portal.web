@@ -1,16 +1,15 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { EnvServiceProvider } from './features/shared/env.service';
-import { FileManagerService } from './features/files/services/file-manager.service';
-import { provideHttpClient } from '@angular/common/http';
+import { provideSpaConfig } from '../config/spa-config.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(),
-    EnvServiceProvider,
-    FileManagerService,
+    provideHttpClient(withInterceptorsFromDi()),
+    provideSpaConfig(),
   ],
 };

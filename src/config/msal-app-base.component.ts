@@ -19,7 +19,7 @@ export abstract class MsalAppBaseComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     protected env: SpaConfig,
-    private authService: MsalService,
+    protected authService: MsalService,
     private msalBroadcastService: MsalBroadcastService
   ) { }
 

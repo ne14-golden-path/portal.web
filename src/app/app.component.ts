@@ -1,12 +1,11 @@
-import { Component, Inject, OnInit } from "@angular/core";
-import { MsalAppBaseComponent } from "../config/msal-app-base.component";
+import { Component, Inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { MSAL_GUARD_CONFIG, MsalBroadcastService, MsalGuardConfiguration, MsalService } from "@azure/msal-angular";
 
+import { MsalAppBaseComponent } from "../config/msal-app-base.component";
 import { SpaConfig } from "../config/spa-config.model";
 import { SignalRService } from "../notices/signalr.service";
-import { map, merge, Observable, of, tap } from "rxjs";
 import { Notice } from "../notices/notice.model";
 
 @Component({
@@ -18,8 +17,6 @@ import { Notice } from "../notices/notice.model";
 })
 export class AppComponent extends MsalAppBaseComponent {
 
-  notice$?: Observable<Notice>;
-
   constructor(
     private signalR: SignalRService,
     @Inject(MSAL_GUARD_CONFIG) guard: MsalGuardConfiguration,
@@ -28,30 +25,24 @@ export class AppComponent extends MsalAppBaseComponent {
     broadcast: MsalBroadcastService,
   ) {
     super(guard, env, auth, broadcast);
-
-    this.signalR.start().pipe(
-      map(_ => this.signalR.receiveMessage()),
-      tap(ss => this.notice$ = ss)
-    );
-
-
-    this.signalR.start().subscribe(() => {
-      this.signalR.receiveMessage().subscribe(notice => {
-        console.warn('SIGNALR MESSAGE RECEIVED!!!!', notice);
-      });
-    });
   }
 
-  // override onSpaLoginChange(): void {
-  //   if (this.loginDisplay) {
-  //     this.signalR.start().subscribe(() => {
-  //       this.signalR.receiveMessage().subscribe(notice => {
-  //         console.warn('SIGNALR MESSAGE RECEIVED!!!!', notice);
-  //       });
-  //     });
-  //   }
-  //   else {
-  //     this.signalR.stop();
-  //   }
-  // }
+  onNotified(notice: Notice) {
+    console.log('SIGNALR MESSAGE RECEIVED!!!!', notice);
+  }
+
+  override onSpaLoginChange(): void {
+    if (!this.loginDisplay) this.signalR.stop();
+    else {
+      // This ludicrous state of affairs allows not just connect and disconnect to signalr 
+      // but also timely automatic instant connection on new visit when already logged in
+      const scopes = [`https://${this.env.b2cTenantSubdomain}.onmicrosoft.com/webapp/api`];
+      this.authService.instance.initialize().then(_ =>
+        this.authService.instance.acquireTokenSilent({ scopes }).then(result => {
+          this.signalR.start(result.accessToken).subscribe(() => {
+            this.signalR.receiveMessage().subscribe(this.onNotified);
+          });
+        }));
+    }
+  }
 }

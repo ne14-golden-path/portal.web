@@ -7,5 +7,7 @@ export enum NoticeLevel {
 
 export interface Notice {
   level: NoticeLevel;
-  message: string;
+  title: string;
+  text: string;
+  data?: any;
 }

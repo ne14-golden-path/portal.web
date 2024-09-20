@@ -18,8 +18,8 @@ export class SignalRService {
 
   receiveMessage(): Observable<Notice> {
     return new Observable<Notice>((observer) => {
-      this.hubConnection.on('ReceiveMessage', (level: NoticeLevel, message: string) => {
-        observer.next({ level, message });
+      this.hubConnection.on('ReceiveMessage', (notice: Notice) => {
+        observer.next(notice);
       });
     });
   }

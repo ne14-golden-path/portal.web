@@ -1,7 +1,3 @@
 a {
-  padding: 1rem;
-
-  &:hover {
-    background-color: #eee;
-  }
+  padding: calc(2 * var(--space));
 }

@@ -15,15 +15,40 @@
 
 .toast {
   padding: var(--space);
-  position: relative;
-  box-shadow: -3px 3px 10px rgba(0, 0, 0, .5);
+  box-shadow: -3px 3px 10px var(--hilite);
 
-  > .close {
-    position: absolute;
-    top: var(--space);
-    right: var(--space);
-    font-size: 2rem;
-    line-height: .6;
-    cursor: pointer;
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h1 {
+      font-size: 1rem;
+      flex: 80% 1 1;
+      margin: 0 var(--space);
+    }
+
+    span {
+      font-size: 1.5rem;
+      border-radius: 50%;
+      width: 1rem;
+      height: 1rem;
+    }
+
+    > .level {
+      background-color: lightgray;
+      &[data-level="1"] { background-color: #7fdb54; } 
+      &[data-level="2"] { background-color: #f8db46; }
+      &[data-level="3"] { background-color: #df4d4d; }
+    }
+
+    > .close {
+      line-height: 0.4;
+      cursor: pointer;
+    }
+  }
+
+  .body {
+    font-size: 0.8rem;
   }
 }

@@ -1,4 +1,7 @@
-<div>
-  <h2>{{notice.title}}</h2>
-  <p>{{notice.text}}</p>
+<div class="wrapper" [class.active]="activeNotice">
+  <div class="toast" *ngIf="activeNotice">
+    <span class="close" (click)="emitClose()">&times;</span>
+    <h2>{{activeNotice.title}}</h2>
+    <p>{{activeNotice.text}}</p>
+  </div>
 </div>

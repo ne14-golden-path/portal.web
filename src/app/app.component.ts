@@ -22,7 +22,6 @@ export class AppComponent implements OnInit, OnDestroy {
     public msal: MsalAppService,
     private signalR: SignalRService,
   ) {
-
     msal.onLoggedOut = () => this.signalR.stop();
     msal.onLoggedIn = token => {
       this.signalR.start(token).subscribe(() => {
@@ -30,6 +29,11 @@ export class AppComponent implements OnInit, OnDestroy {
       });
     }
   }
+
   ngOnInit() { this.msal.init(); }
   ngOnDestroy() { this.msal.dispose(); }
+
+  onToastClose() {
+    this.activeNotice = undefined;
+  }
 }

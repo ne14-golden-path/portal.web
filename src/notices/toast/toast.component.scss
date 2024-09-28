@@ -1,0 +1,29 @@
+.wrapper {
+  background-color: var(--white);
+  width: min(300px, 100vw - .5rem);
+  position: fixed;
+  top: var(--space);
+  right: var(--space);
+  z-index: 999999;
+  opacity: 0;
+  transition: opacity .3s;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+.toast {
+  padding: var(--space);
+  position: relative;
+  box-shadow: -3px 3px 10px rgba(0, 0, 0, .5);
+
+  > .close {
+    position: absolute;
+    top: var(--space);
+    right: var(--space);
+    font-size: 2rem;
+    line-height: .6;
+    cursor: pointer;
+  }
+}

@@ -2,8 +2,13 @@
 <a [routerLink]="['/documents']">Documents</a>
 <a [routerLink]="['/weather']">Weather</a>
 
-<button *ngIf="!loginDisplay" (click)="login()">Log in</button>
-<button *ngIf="loginDisplay" (click)="logout()">Log out</button>
+<button *ngIf="!msal.loginDisplay" (click)="msal.login()">Log in</button>
+<button *ngIf="msal.loginDisplay" (click)="msal.logout()">Log out</button>
 
 <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
-<router-outlet *ngIf="!isIframe"/>
+<router-outlet *ngIf="!msal.isIframe"/>
+
+<div class="toast-wrapper" [class.active]="activeNotice">
+  <p>Title: {{activeNotice?.title}}</p>
+  <app-toast *ngIf="activeNotice" [notice]="activeNotice"/>
+</div>

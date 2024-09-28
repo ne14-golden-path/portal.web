@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { MSAL_GUARD_CONFIG, MsalBroadcastService, MsalGuardConfiguration, MsalService } from '@azure/msal-angular';
 import { AuthenticationResult, EventMessage, EventType, IdTokenClaims, InteractionStatus, InteractionType, PopupRequest, RedirectRequest } from '@azure/msal-browser';
 import { filter, Subject, takeUntil } from 'rxjs';
@@ -10,8 +10,8 @@ type IdTokenClaimsWithPolicyId = IdTokenClaims & {
   tfp?: string,
 };
 
-@Component({ template: '' })
-export abstract class MsalAppBaseComponent implements OnInit, OnDestroy {
+@Injectable({ providedIn: 'root' })
+export class MsalAppService {
   isIframe = false;
   loginDisplay = false;
   private readonly _destroying$ = new Subject<void>();
@@ -19,13 +19,14 @@ export abstract class MsalAppBaseComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     protected env: SpaConfig,
-    protected authService: MsalService,
+    public authService: MsalService,
     private msalBroadcastService: MsalBroadcastService
   ) { }
 
-  onSpaLoginChange() {}
+  onLoggedIn = (token: string) => {};
+  onLoggedOut = () => {};
 
-  ngOnInit(): void {
+  public init(): void {
     // Do this FIRST to ensure redirects are handled
     // (MsalRedirectComponent would do it, but it cannot be bootstrapped in standalone apps)
     this.authService.handleRedirectObservable().subscribe();
@@ -81,7 +82,17 @@ export abstract class MsalAppBaseComponent implements OnInit, OnDestroy {
     const oldValue = this.loginDisplay;
     this.loginDisplay = this.authService.instance.getAllAccounts().length > 0;
     if (this.loginDisplay != oldValue) {
-      this.onSpaLoginChange();
+      if (!this.loginDisplay) this.onLoggedOut();
+      else {
+        // This nested chain of methods allows us to not just connect and disconnect to signalr 
+        // but also (timely) automatic instant connection on new visit when already logged in
+        const scopes = [`https://${this.env.b2cTenantSubdomain}.onmicrosoft.com/webapp/api`];
+        this.authService.instance.initialize().then(_ => {
+          this.authService.instance.acquireTokenSilent({ scopes }).then(result => {
+            this.onLoggedIn(result.accessToken);
+          })
+        });
+      }
     }
   }
 
@@ -139,7 +150,7 @@ export abstract class MsalAppBaseComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
+  public dispose(): void {
     this._destroying$.next(undefined);
     this._destroying$.complete();
   }

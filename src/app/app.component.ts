@@ -26,15 +26,10 @@ export class AppComponent implements OnInit, OnDestroy {
     msal.onLoggedOut = () => this.signalR.stop();
     msal.onLoggedIn = token => {
       this.signalR.start(token).subscribe(() => {
-        this.signalR.receiveMessage().subscribe(this.onNotified);
+        this.signalR.receiveMessage().subscribe(n => this.activeNotice = n);
       });
     }
   }
   ngOnInit() { this.msal.init(); }
   ngOnDestroy() { this.msal.dispose(); }
-
-  onNotified(notice: Notice) {
-    console.log('SIGNALR MESSAGE RECEIVED!!!!');
-    this.activeNotice = notice;
-  }
 }

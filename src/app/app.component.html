@@ -9,6 +9,5 @@
 <router-outlet *ngIf="!msal.isIframe"/>
 
 <div class="toast-wrapper" [class.active]="activeNotice">
-  <p>Title: {{activeNotice?.title}}</p>
   <app-toast *ngIf="activeNotice" [notice]="activeNotice"/>
 </div>

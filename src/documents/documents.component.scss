@@ -1,0 +1,25 @@
+.docs-table {
+
+    > div {
+        display: flex;
+
+        &:nth-child(2n) {
+            background-color: #efefef;
+        }
+
+        > div.name {
+            flex: 80% 1 1;
+        }
+
+        > div.size {
+            flex: 75px 0 0;
+        }
+
+        > div.link {
+            text-align: center;
+            flex: 25px 0 0;
+            cursor: pointer;
+            color: blue;
+        }
+    }
+}

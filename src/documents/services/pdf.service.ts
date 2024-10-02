@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { SpaConfig } from '../../config/spa-config.model';
+import { BlobListing } from '../models/blob-listing.model';
 
 @Injectable({ providedIn: 'root' })
 export class PdfService {
@@ -16,5 +17,13 @@ export class PdfService {
     const formData = new FormData();
     formData.append('file', file, file.name);
     return this.httpClient.post<string>(this.url, formData);
+  }
+
+  public listBlobs() {
+    return this.httpClient.get<BlobListing[]>(this.url);
+  }
+
+  public download(blobReference: string) {
+    return this.httpClient.get(`${this.url}/${blobReference}`, { observe: 'response', responseType: 'blob' })
   }
 }

@@ -26,4 +26,8 @@ export class PdfService {
   public download(blobReference: string) {
     return this.httpClient.get(`${this.url}/${blobReference}`, { observe: 'response', responseType: 'blob' })
   }
+
+  public delete(blobReference: string) {
+    return this.httpClient.delete(`${this.url}/${blobReference}`);
+  }
 }

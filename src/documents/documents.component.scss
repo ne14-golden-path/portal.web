@@ -1,36 +1,55 @@
 .docs-table {
     margin-top: 2rem;
     max-width: 800px;
+    word-break: break-all;
 
-    > div {
+    >div {
         display: flex;
 
-        &:is(.header) {
+        &.header {
             font-weight: bold;
         }
 
-        &:nth-child(2n) {
+        &.body:nth-child(2n) {
             background-color: #efefef;
         }
 
-        &:nth-child(2n + 1) {
+        &.body:nth-child(2n + 1) {
             background-color: #dedede;
         }
 
-        > div.name {
-            flex: 80% 1 1;
-        }
+        >div {
+            padding: 0 .25rem;
 
-        > div.size {
-            flex: 75px 0 0;
-        }
+            &.name {
+                flex: 80% 1 1;
+            }
 
-        > div.link {
-            flex: 50px 0 0;
+            &.size {
+                flex: 4rem 0 0;
+            }
 
-            &:is(.body > div) {
-                cursor: pointer;
-                color: blue;
+            &.link {
+                flex: 4rem 0 0;
+                text-align: center;
+
+                &:is(.body > div) {
+                    cursor: pointer;
+                    font-weight: bold;
+
+                    .download {
+                        color: #148007;
+                    }
+
+                    .delete {
+                        color: rgb(112, 0, 0);
+                    }
+                }
+
+                span {
+                    padding: 0 .25rem;
+                    margin: 0 .25rem;
+                }
             }
         }
     }

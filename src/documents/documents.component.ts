@@ -1,10 +1,10 @@
-import { CommonModule, DecimalPipe } from "@angular/common";
+import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
+import { Observable, of } from "rxjs";
 
 import { PdfService } from "./services/pdf.service";
-import { Observable, of } from "rxjs";
 import { BlobListing } from "./models/blob-listing.model";
 
 @Component({
@@ -41,7 +41,7 @@ export class DocumentsComponent {
 
   download(blobReference: string) {
     this.pdfService.download(blobReference).subscribe(response => {
-      //console.log(response.headers.get('content-disposition'));
+      console.log(response.headers.get('Content-Disposition'));
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(response.body!);
       link.download = 'myfile.pdf';
@@ -49,5 +49,11 @@ export class DocumentsComponent {
       link.click();
       document.body.removeChild(link);
     })
+  }
+
+  deleteBlob(blobReference: string) {
+    this.pdfService.delete(blobReference).subscribe(_ => {
+      this.blobs$ = this.pdfService.listBlobs();
+    });
   }
 }

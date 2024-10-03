@@ -8,7 +8,12 @@
 </form>
 
 <div *ngIf="(blobs$ | async) ?? [] as blobs" class="docs-table">
-    <div *ngFor="let blob of blobs" [attr.data-blob-id]="blob.blobReference">
+    <div class="header">
+        <div class="name">File Name</div>
+        <div class="size">File Size</div>
+        <div class="link">Download</div>
+    </div>
+    <div class="body" *ngFor="let blob of blobs" [attr.data-blob-id]="blob.blobReference">
         <div class="name">{{ blob.fileName }}</div>
         <div class="size">{{ blob.fileSize / 1024 | number: '1.0-1' }}kb</div>
         <div class="link"><span (click)="download(blob.blobReference)">&#x2B73;</span></div>

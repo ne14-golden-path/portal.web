@@ -6,6 +6,7 @@ import { Observable, of } from "rxjs";
 
 import { PdfService } from "./services/pdf.service";
 import { BlobMetaData, LazyPageResult } from "./models/blob-listing.model";
+import { UploadComponent } from "../controls/uploader/upload.component";
 
 @Component({
     selector: 'app-documents',
@@ -14,6 +15,7 @@ import { BlobMetaData, LazyPageResult } from "./models/blob-listing.model";
       CommonModule,
       FormsModule,
       RouterModule,
+      UploadComponent,
     ],
     templateUrl: './documents.component.html',
     styleUrl: './documents.component.scss'
@@ -56,5 +58,9 @@ export class DocumentsComponent {
     this.pdfService.delete(blobReference).subscribe(_ => {
       this.blobsPage$ = this.pdfService.listBlobs();
     });
+  }
+
+  onUploadSelected(files: FileList) {
+    console.log('ok, u/l \'em:', files.length);
   }
 }

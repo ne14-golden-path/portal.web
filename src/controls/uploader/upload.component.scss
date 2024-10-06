@@ -1,0 +1,24 @@
+:host {
+  width: 100%;
+  border: 4px dashed #ddd;
+}
+
+.zone {
+  position: relative;
+  min-height: 1rem;
+  cursor: pointer;
+  transition: background-color .6s;
+
+  &.dragging {
+    background-color: #999;
+  }
+  
+  input[type=file] {
+    height: 0;
+    opacity: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }  
+}
+

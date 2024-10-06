@@ -41,11 +41,11 @@ export class DocumentsComponent {
 
   download(blobReference: string) {
     this.pdfService.download(blobReference).subscribe(response => {
-      const dispositions = response.headers.get('Content-Disposition')?.split(';');
-      console.log(dispositions);
+      const rawDisposition = response.headers.get('Content-Disposition') || '';
+      const fileName = (rawDisposition.match(/\bfilename="?([^";]*)"?;/) || ['','']) [1];
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(response.body!);
-      link.download = 'myfile.pdf';
+      link.download = fileName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

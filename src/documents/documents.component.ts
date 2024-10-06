@@ -5,7 +5,7 @@ import { RouterModule } from "@angular/router";
 import { Observable, of } from "rxjs";
 
 import { PdfService } from "./services/pdf.service";
-import { BlobListing } from "./models/blob-listing.model";
+import { BlobMetaData, LazyPageResult } from "./models/blob-listing.model";
 
 @Component({
     selector: 'app-documents',
@@ -20,12 +20,12 @@ import { BlobListing } from "./models/blob-listing.model";
 })
 export class DocumentsComponent {
 
-  blobs$: Observable<BlobListing[]> = of([]);
+  blobsPage$: Observable<LazyPageResult<BlobMetaData>> = of();
   fileUploadRef?: Observable<string>;
   file?: File;
 
   constructor(private pdfService: PdfService) {
-    this.blobs$ = pdfService.listBlobs();
+    this.blobsPage$ = pdfService.listBlobs();
   }
 
   onFileChange(event: Event) {
@@ -41,7 +41,8 @@ export class DocumentsComponent {
 
   download(blobReference: string) {
     this.pdfService.download(blobReference).subscribe(response => {
-      console.log(response.headers.get('Content-Disposition'));
+      const dispositions = response.headers.get('Content-Disposition')?.split(';');
+      console.log(dispositions);
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(response.body!);
       link.download = 'myfile.pdf';
@@ -53,7 +54,7 @@ export class DocumentsComponent {
 
   deleteBlob(blobReference: string) {
     this.pdfService.delete(blobReference).subscribe(_ => {
-      this.blobs$ = this.pdfService.listBlobs();
+      this.blobsPage$ = this.pdfService.listBlobs();
     });
   }
 }

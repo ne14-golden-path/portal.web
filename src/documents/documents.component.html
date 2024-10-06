@@ -7,21 +7,21 @@
     <input *ngIf="file" type="button" (click)="submit()" value="Upload!"/>
 </form>
 
-<div *ngIf="(blobs$ | async) ?? [] as blobs" class="docs-table">
+<div *ngIf="(blobsPage$ | async) as blobsPage" class="docs-table">
     <div class="header">
         <div class="name">File Name</div>
         <div class="size">Size</div>
         <div class="link"></div>
     </div>
-    <div class="body" *ngFor="let blob of blobs" [attr.data-blob-id]="blob.blobReference">
+    <div class="body" *ngFor="let blob of blobsPage.data" [attr.data-blob-id]="blob.reference">
         <div class="name">{{ blob.fileName }}</div>
         <div class="size">{{ blob.fileSize / 1024 | number: '1.0-1' }}kb</div>
         <div class="link">
-            <span class="download" (click)="download(blob.blobReference)">&#x2B73;</span>
-            <span class="delete" (click)="deleteBlob(blob.blobReference)">&times;</span>
+            <span class="download" (click)="download(blob.reference)">&#x2B73;</span>
+            <span class="delete" (click)="deleteBlob(blob.reference)">&times;</span>
         </div>
     </div>
-    <div *ngIf="!blobs.length">
+    <div *ngIf="!blobsPage.data.length">
         No documents found!
     </div>
 </div>

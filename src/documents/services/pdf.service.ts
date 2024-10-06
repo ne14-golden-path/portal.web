@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { SpaConfig } from '../../config/spa-config.model';
-import { BlobListing } from '../models/blob-listing.model';
+import { BlobMetaData, LazyPageResult } from '../models/blob-listing.model';
 
 @Injectable({ providedIn: 'root' })
 export class PdfService {
@@ -20,7 +20,7 @@ export class PdfService {
   }
 
   public listBlobs() {
-    return this.httpClient.get<BlobListing[]>(this.url);
+    return this.httpClient.get<LazyPageResult<BlobMetaData>>(this.url);
   }
 
   public download(blobReference: string) {

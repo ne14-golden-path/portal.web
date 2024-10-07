@@ -1,12 +1,5 @@
 <h1>Dox!</h1>
 
-<p>{{fileUploadRef | async}}</p>
-
-<form #uploadForm>
-    <input type="file" required (change)="onFileChange($event)"/>
-    <input *ngIf="file" type="button" (click)="submit()" value="Upload!"/>
-</form>
-
 <div *ngIf="(blobsPage$ | async) as blobsPage" class="docs-table">
     <div class="header">
         <div class="name">File Name</div>

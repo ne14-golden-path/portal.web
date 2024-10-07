@@ -23,22 +23,9 @@ import { UploadComponent } from "../controls/uploader/upload.component";
 export class DocumentsComponent {
 
   blobsPage$: Observable<LazyPageResult<BlobMetaData>> = of();
-  fileUploadRef?: Observable<string>;
-  file?: File;
 
   constructor(private pdfService: PdfService) {
     this.blobsPage$ = pdfService.listBlobs();
-  }
-
-  onFileChange(event: Event) {
-    const files = (event.target as HTMLInputElement).files || [];
-    this.file = files.length > 0 ? files[0] : undefined;
-  }
-
-  submit() {
-    if (this.file) {
-      this.fileUploadRef = this.pdfService.beginPdfConversion(this.file!);
-    }
   }
 
   download(blobReference: string) {
@@ -61,6 +48,10 @@ export class DocumentsComponent {
   }
 
   onUploadSelected(files: FileList) {
-    console.log('ok, u/l \'em:', files.length);
+    for (var s = 0; s < files.length; s++) {
+      this.pdfService.beginPdfConversion(files[s]).subscribe(r => {
+        console.log('upload confirmed:', r);
+      });
+    }
   }
 }

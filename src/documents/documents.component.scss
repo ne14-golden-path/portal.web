@@ -1,5 +1,4 @@
 .docs-table {
-    margin-top: 2rem;
     max-width: 800px;
     word-break: break-all;
 
@@ -16,6 +15,10 @@
 
         &.body:nth-child(2n + 1) {
             background-color: #dedede;
+        }
+
+        &.footer {
+            margin-top: .5rem;
         }
 
         >div {

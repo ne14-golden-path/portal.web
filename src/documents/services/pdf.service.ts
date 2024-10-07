@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { SpaConfig } from '../../config/spa-config.model';
-import { BlobMetaData, LazyPageResult } from '../models/blob-listing.model';
+import { BlobMetaData, LazyPageResult, PageRequest } from '../models/blob-listing.model';
 
 @Injectable({ providedIn: 'root' })
 export class PdfService {
@@ -19,8 +19,12 @@ export class PdfService {
     return this.httpClient.post<string>(this.url, formData);
   }
 
-  public listBlobs() {
-    return this.httpClient.get<LazyPageResult<BlobMetaData>>(this.url);
+  public listBlobs(paging: PageRequest) {
+    const params = new HttpParams({ fromObject: {
+      'pageNumber': paging.pageNumber,
+      'pageSize': paging.pageSize,
+    }});
+    return this.httpClient.get<LazyPageResult<BlobMetaData>>(this.url, { params });
   }
 
   public download(blobReference: string) {

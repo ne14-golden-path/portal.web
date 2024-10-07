@@ -15,19 +15,18 @@ export class UploadComponent {
   ctrl!: ElementRef<HTMLInputElement>;
 
   @Output()
-  selected = new EventEmitter<FileList>();
+  selected = new EventEmitter<File[]>();
 
   dragging: boolean = false;
+  accept: string = '.doc,.docx,.html';
 
   zoneClick() {
     this.ctrl.nativeElement.click();
   }
 
   inputChange(event: Event) {
-    const files = (event.target as HTMLInputElement).files;
-    if (files?.length) {
-      this.selected.emit(files);
-    }
+    const files = (event.target as HTMLInputElement).files || [];
+    this.emitValidFiles(Array.from(files || []));
   }
 
   startDrag(event: DragEvent) {
@@ -43,9 +42,20 @@ export class UploadComponent {
   drop(event: DragEvent) {
     event.preventDefault();
     this.stopDrag();
-    const files = event.dataTransfer?.files;
-    if (files?.length) {
-      this.selected.emit(files);
+    this.emitValidFiles(Array.from(event.dataTransfer?.files || []));
+  }
+
+  private emitValidFiles(files: File[]) {
+    const exts = this.accept.split(',');
+    const valid = Array.from(files || []).filter(f => {
+      const parts = f.name.split('.');
+      const ext = '.' + parts[parts.length - 1];
+      const validFile = exts.includes(ext);
+      if (!validFile) console.log(`Extension not supported: ${ext}`);
+      return validFile;
+    });
+    if (valid.length) {
+      this.selected.emit(valid);
     }
   }
 }

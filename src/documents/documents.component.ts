@@ -5,7 +5,7 @@ import { RouterModule } from "@angular/router";
 import { Observable, of } from "rxjs";
 
 import { PdfService } from "./services/pdf.service";
-import { BlobMetaData, LazyPageResult } from "./models/blob-listing.model";
+import { BlobMetaData, LazyPageResult, PageRequest } from "./models/blob-listing.model";
 import { UploadComponent } from "../controls/uploader/upload.component";
 
 @Component({
@@ -23,9 +23,10 @@ import { UploadComponent } from "../controls/uploader/upload.component";
 export class DocumentsComponent {
 
   blobsPage$: Observable<LazyPageResult<BlobMetaData>> = of();
+  paging: PageRequest = { pageNumber: 1, pageSize: 50 };
 
   constructor(private pdfService: PdfService) {
-    this.blobsPage$ = pdfService.listBlobs();
+    this.blobsPage$ = pdfService.listBlobs(this.paging);
   }
 
   download(blobReference: string) {
@@ -43,15 +44,15 @@ export class DocumentsComponent {
 
   deleteBlob(blobReference: string) {
     this.pdfService.delete(blobReference).subscribe(_ => {
-      this.blobsPage$ = this.pdfService.listBlobs();
+      this.blobsPage$ = this.pdfService.listBlobs(this.paging);
     });
   }
 
-  onUploadSelected(files: FileList) {
-    for (var s = 0; s < files.length; s++) {
-      this.pdfService.beginPdfConversion(files[s]).subscribe(r => {
+  onUploadSelected(files: File[]) {
+    files.forEach(f => {
+      this.pdfService.beginPdfConversion(f).subscribe(r => {
         console.log('upload confirmed:', r);
       });
-    }
+    });
   }
 }

@@ -2,5 +2,6 @@
   (dragenter)="startDrag($event)" (dragover)="startDrag($event)"
   (dragleave)="stopDrag()" (dragend)="stopDrag()"
   (drop)="drop($event)">
-  <input #ctrl type="file" multiple (change)="inputChange($event)" />
+  <input #ctrl type="file" multiple [accept]="accept" (change)="inputChange($event)" />
+  <p>drag {{accept}} files here or click</p>
 </div>

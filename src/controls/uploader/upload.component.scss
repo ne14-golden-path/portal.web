@@ -1,6 +1,6 @@
 :host {
   width: 100%;
-  border: 4px dashed #ddd;
+  border: 4px dashed var(--hilite);
 }
 
 .zone {
@@ -8,9 +8,15 @@
   min-height: 1rem;
   cursor: pointer;
   transition: background-color .6s;
+  text-align: center;
+  font-size: .8rem;
+  font-style: italic;
+  padding: .25rem;
+  opacity: .6;
 
   &.dragging {
-    background-color: #999;
+    color: var(--bg);
+    background-color: var(--text-color);
   }
   
   input[type=file] {
@@ -19,6 +25,10 @@
     width: 0;
     position: absolute;
     pointer-events: none;
-  }  
+  }
+
+  p {
+    user-select: none;
+  }
 }
 

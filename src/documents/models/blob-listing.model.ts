@@ -1,3 +1,8 @@
+export interface PageRequest {
+  pageNumber: number;
+  pageSize: number;
+}
+
 export interface LazyPageResult<T> {
   pageNumber: number;
   pageSize: number;

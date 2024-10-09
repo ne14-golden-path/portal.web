@@ -1,12 +1,12 @@
 <h1>Documents</h1>
 
-<div *ngIf="(blobsPage$ | async) as blobsPage" class="docs-table">
+<div *ngIf="(blobsResponse$ | async) as blobs" class="docs-table">
     <div class="header">
         <div class="name">File Name</div>
         <div class="size">Size</div>
         <div class="link"></div>
     </div>
-    <div class="body" *ngFor="let blob of blobsPage.data" [attr.data-blob-id]="blob.reference">
+    <div class="body" *ngFor="let blob of blobs.data" [attr.data-blob-id]="blob.reference">
         <div class="name">{{ blob.fileName }}</div>
         <div class="size">{{ blob.fileSize / 1024 | number: '1.0-1' }}kb</div>
         <div class="link">
@@ -14,7 +14,7 @@
             <span class="delete" (click)="deleteBlob(blob.reference)">&times;</span>
         </div>
     </div>
-    <div class="body" *ngIf="!blobsPage.data.length">
+    <div class="body" *ngIf="!blobs.data.length">
         No documents found!
     </div>
     <div class="footer">

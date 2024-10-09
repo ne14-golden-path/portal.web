@@ -2,11 +2,14 @@ import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { Observable, of } from "rxjs";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
 
-import { PdfService } from "./services/pdf.service";
 import { BlobMetaData, LazyPageResult, PageRequest } from "./models/blob-listing.model";
 import { UploadComponent } from "../controls/uploader/upload.component";
+import { AppState } from "../store/app.state";
+import { appSelectors } from "../store/app.selectors";
+import { appActions } from "../store/app.actions";
 
 @Component({
     selector: 'app-documents',
@@ -22,37 +25,29 @@ import { UploadComponent } from "../controls/uploader/upload.component";
 })
 export class DocumentsComponent {
 
-  blobsPage$: Observable<LazyPageResult<BlobMetaData>> = of();
-  paging: PageRequest = { pageNumber: 1, pageSize: 50 };
+  blobsRequest: PageRequest = { pageNumber: 1, pageSize: 10 };
+  blobsResponse$: Observable<LazyPageResult<BlobMetaData>>;
 
-  constructor(private pdfService: PdfService) {
-    this.blobsPage$ = pdfService.listBlobs(this.paging);
+  constructor(private store: Store<AppState>) {
+    this.blobsResponse$ = this.store.select(appSelectors.getBlobs);
+    this.requestCurrentPage();
   }
 
   download(blobReference: string) {
-    this.pdfService.download(blobReference).subscribe(response => {
-      const rawDisposition = response.headers.get('Content-Disposition') || '';
-      const fileName = (rawDisposition.match(/\bfilename="?([^";]*)"?;/) || ['','']) [1];
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(response.body!);
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    })
+    this.store.dispatch(appActions.downloadBlob({ ref: blobReference }));
   }
 
   deleteBlob(blobReference: string) {
-    this.pdfService.delete(blobReference).subscribe(_ => {
-      this.blobsPage$ = this.pdfService.listBlobs(this.paging);
-    });
+    this.store.dispatch(appActions.deleteBlob({ ref: blobReference }));
   }
 
   onUploadSelected(files: File[]) {
     files.forEach(f => {
-      this.pdfService.beginPdfConversion(f).subscribe(r => {
-        console.log('upload confirmed:', r);
-      });
+      this.store.dispatch(appActions.startPdfConversion({ file: f }));
     });
+  }
+
+  requestCurrentPage() {
+    this.store.dispatch(appActions.listBlobs({ request: this.blobsRequest }));
   }
 }

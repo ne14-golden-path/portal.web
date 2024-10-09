@@ -5,7 +5,7 @@ import { SpaConfig } from '../../config/spa-config.model';
 import { BlobMetaData, LazyPageResult, PageRequest } from '../models/blob-listing.model';
 
 @Injectable({ providedIn: 'root' })
-export class PdfService {
+export class BlobsService {
 
   private readonly url: string;
 
@@ -13,7 +13,7 @@ export class PdfService {
     this.url = `${env.apiUrl}/pdf`;
   }
 
-  public beginPdfConversion(file: File) {
+  public convertToPdf(file: File) {
     const formData = new FormData();
     formData.append('file', file, file.name);
     return this.httpClient.post<string>(this.url, formData);

@@ -56,6 +56,7 @@ export class UploadComponent {
     });
     if (valid.length) {
       this.selected.emit(valid);
+      this.ctrl.nativeElement.value = '';
     }
   }
 }

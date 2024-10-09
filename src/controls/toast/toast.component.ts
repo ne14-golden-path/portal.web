@@ -20,8 +20,9 @@ export class ToastComponent implements OnChanges {
   noticeList: { key: string, notice: Notice }[] = [];
   
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes, changes['notices']);
-    this.noticeList = Object.keys(this.notices).map(key => ({ key, notice: this.notices[key] }));
+    if (changes['notices']) {
+      this.noticeList = Object.keys(this.notices).map(key => ({ key, notice: this.notices[key] }));
+    }
   }
 
   emitClose(key: string) {

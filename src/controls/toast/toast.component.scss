@@ -1,9 +1,9 @@
 .wrapper {
   background-color: var(--white);
   width: min(300px, 100vw - .5rem);
-  position: fixed;
   top: var(--space);
   right: var(--space);
+  position: fixed;
   z-index: 999999;
   opacity: 0;
   transition: opacity .3s;
@@ -16,6 +16,8 @@
 .toast {
   padding: var(--space);
   box-shadow: -3px 3px 10px var(--hilite);
+  background-color: var(--bg);
+  margin-bottom: .5rem;
 
   .header {
     display: flex;

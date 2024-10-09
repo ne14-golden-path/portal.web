@@ -1,0 +1,12 @@
+<div class="wrapper" [class.active]="noticeList.length">
+  <div class="toast" *ngFor="let item of noticeList">
+    <div class="header">
+      <span class="level" [attr.data-level]="item.notice.level"></span>
+      <h1>{{item.notice.title}}</h1>  
+      <span class="close" (click)="emitClose(item.key)">&times;</span>
+    </div>
+    <div class="body">
+      <p>{{item.notice.text}}</p>
+    </div>
+  </div>
+</div>

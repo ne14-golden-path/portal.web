@@ -1,15 +1,15 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
 
+import { MsalAppService } from "../config/msal.service";
 import { SignalRService } from "../notices/signalr.service";
 import { Notice } from "../notices/notice.model";
-import { ToastComponent } from "../notices/toast/toast.component";
-import { MsalAppService } from "../config/msal.service";
-import { Store } from "@ngrx/store";
+import { ToastComponent } from "../controls/toast/toast.component";
 import { AppState } from "../store/app.state";
 import { appActions } from "../store/app.actions";
-import { map, Observable } from "rxjs";
 import { appSelectors } from "../store/app.selectors";
 
 @Component({
@@ -21,25 +21,23 @@ import { appSelectors } from "../store/app.selectors";
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  notices$: Observable<{ key: string, notice: Notice}[]>;
+  // Use this key to replace any existing generic message
+  private readonly SHARED_CHANNEL_KEY: string = '';
+
+  notices$: Observable<Record<string, Notice>>;
 
   constructor(
     public msal: MsalAppService,
     private signalR: SignalRService,
     private store: Store<AppState>,
   ) {
-    this.notices$ = store.select(appSelectors.getNotices).pipe(
-      map(n => Object.keys(n).map(key => ({ key, notice: n[key] }))),
-    );
-
+    this.notices$ = store.select(appSelectors.getNotices);
     msal.onLoggedOut = () => this.signalR.stop();
     msal.onLoggedIn = token => {
       this.signalR.start(token).subscribe(() => {
         this.signalR.receiveMessage().subscribe(notice => {
-
-          console.log('TODO! determine key!!', notice);
-          const msg = { key: '123', notice };
-          this.store.dispatch(appActions.addNotice(msg));
+          const key = notice.data?.inboundBlobReference || this.SHARED_CHANNEL_KEY;
+          this.store.dispatch(appActions.addNotice({ key, notice }));
         });
       });
     }

@@ -8,4 +8,6 @@
 <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
 <router-outlet *ngIf="!msal.isIframe"/>
 
-<app-toast [activeNotice]="activeNotice" (close)="onToastClose()"/>
+<ng-container *ngIf="(notices$ | async) as noticeItems">
+  <app-toast *ngFor="let item of noticeItems" [activeNotice]="item.notice" (close)="onToastClose(item.key)"/>
+</ng-container>

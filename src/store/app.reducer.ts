@@ -12,4 +12,16 @@ export const appReducer = createReducer<AppState>(
     ...state,
     blobs: { ...state.blobs, data: state.blobs.data.filter(b => b.reference != action.ref) },
   })),
+
+  on(appActions.addNotice, (state, action): AppState => {
+    const notices = { ...state.notices };
+    notices[action.key] = action.notice;
+    return { ...state, notices };
+  }),
+
+  on(appActions.removeNotice, (state, action): AppState => {
+    const notices = { ...state.notices };
+    delete notices[action.key];
+    return { ...state, notices };
+  }),
 );

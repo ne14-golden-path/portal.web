@@ -1,5 +1,6 @@
 import { createAction, props } from "@ngrx/store"
 import { BlobMetaData, LazyPageResult, PageRequest } from "../documents/models/blob-listing.model"
+import { Notice } from "../notices/notice.model"
 
 export const appActions = {
   listBlobs: createAction('[App] List Blobs', props<{ request?: PageRequest }>()),
@@ -17,4 +18,7 @@ export const appActions = {
   deleteBlob: createAction('[App] Delete Blob', props<{ ref: string }>()),
   deleteBlobSuccess: createAction('[App] Delete Blob - Success'),
   deleteBlobFailure: createAction('[App] Delete Blob - Failure', props<{ error: any }>()),
+
+  addNotice: createAction('[App] Add Notice', props<{ key: string, notice: Notice }>()),
+  removeNotice: createAction('[App] Remove Notice', props<{ key: string }>()),
 }

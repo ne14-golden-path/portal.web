@@ -49,4 +49,8 @@ export class AppComponent implements OnInit, OnDestroy {
   onToastClose(key: string) {
     this.store.dispatch(appActions.removeNotice({ key }));
   }
+
+  onToggleDarkMode() {
+    window.document.querySelector('html')?.classList.toggle('dark-mode');
+  }
 }

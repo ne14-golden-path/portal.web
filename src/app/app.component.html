@@ -2,6 +2,8 @@
 <a [routerLink]="['/documents']">Documents</a>
 <a [routerLink]="['/weather']">Weather</a>
 
+<input type="checkbox" (input)="onToggleDarkMode()" />
+
 <button *ngIf="!msal.loginDisplay" (click)="msal.login()">Log in</button>
 <button *ngIf="msal.loginDisplay" (click)="msal.logout()">Log out</button>
 

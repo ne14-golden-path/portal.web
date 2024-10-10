@@ -3,6 +3,8 @@
   --text-color: #343434;
   --hilite: #dddddd;
   --space: 0.5rem;
+  --row-bg-even: #efefef;
+  --row-bg-odd: #dedede;
 }
 
 html {
@@ -16,6 +18,8 @@ html {
     --bg: #343434;
     --text-color: #ffffff;
     --hilite: #999999;
+    --row-bg-even: #555555;
+    --row-bg-odd: #7e7e7e;
   }
 }
 

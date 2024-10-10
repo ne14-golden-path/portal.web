@@ -10,11 +10,11 @@
         }
 
         &.body:nth-child(2n) {
-            background-color: #efefef;
+            background-color: var(--row-bg-even);
         }
 
         &.body:nth-child(2n + 1) {
-            background-color: #dedede;
+            background-color: var(--row-bg-odd);
         }
 
         &.footer {
@@ -39,6 +39,7 @@
                 &:is(.body > div) {
                     cursor: pointer;
                     font-weight: bold;
+                    -webkit-text-stroke: 0.1px rgba(255, 255, 255, 0.5);
 
                     .download {
                         color: #148007;

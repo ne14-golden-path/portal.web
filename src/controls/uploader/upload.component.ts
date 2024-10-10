@@ -17,6 +17,9 @@ export class UploadComponent {
   @Output()
   selected = new EventEmitter<File[]>();
 
+  @Output()
+  invalid = new EventEmitter<string>();
+
   dragging: boolean = false;
   accept: string = '.doc,.docx,.html';
 
@@ -47,16 +50,20 @@ export class UploadComponent {
 
   private emitValidFiles(files: File[]) {
     const exts = this.accept.split(',');
+    let invalid = 0;
     const valid = Array.from(files || []).filter(f => {
       const parts = f.name.split('.');
       const ext = '.' + parts[parts.length - 1];
       const validFile = exts.includes(ext);
-      if (!validFile) console.log(`Extension not supported: ${ext}`);
+      if (!validFile) invalid++;
       return validFile;
     });
     if (valid.length) {
       this.selected.emit(valid);
       this.ctrl.nativeElement.value = '';
+    }
+    if (invalid > 0) {
+      this.invalid.emit(`${invalid} file(s) could not be uploaded. Only ${this.accept} files are supported for conversion.`);
     }
   }
 }

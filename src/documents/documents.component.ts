@@ -10,6 +10,7 @@ import { UploadComponent } from "../controls/uploader/upload.component";
 import { AppState } from "../store/app.state";
 import { appSelectors } from "../store/app.selectors";
 import { appActions } from "../store/app.actions";
+import { Notice, NoticeLevel, SHARED_CHANNEL_KEY } from "../notices/notice.model";
 
 @Component({
     selector: 'app-documents',
@@ -45,6 +46,13 @@ export class DocumentsComponent {
     files.forEach(f => {
       this.store.dispatch(appActions.startPdfConversion({ file: f }));
     });
+  }
+
+  onUploadInvalid(message: string) {
+    const key = SHARED_CHANNEL_KEY;
+    const title = 'Invalid File(s)';
+    const notice: Notice = { level: NoticeLevel.Failure, title, text: message };
+    this.store.dispatch(appActions.addNotice({ key, notice }))
   }
 
   requestCurrentPage() {

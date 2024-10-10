@@ -11,3 +11,7 @@ export interface Notice {
   text: string;
   data?: any;
 }
+
+// Use this key to replace any existing generic notices
+// with no further correlation expected / required
+export const SHARED_CHANNEL_KEY: string = '';

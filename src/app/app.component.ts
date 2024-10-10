@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
 
 import { MsalAppService } from "../config/msal.service";
 import { SignalRService } from "../notices/signalr.service";
-import { Notice } from "../notices/notice.model";
+import { Notice, SHARED_CHANNEL_KEY } from "../notices/notice.model";
 import { ToastComponent } from "../controls/toast/toast.component";
 import { AppState } from "../store/app.state";
 import { appActions } from "../store/app.actions";
@@ -21,9 +21,6 @@ import { appSelectors } from "../store/app.selectors";
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  // Use this key to replace any existing generic message
-  private readonly SHARED_CHANNEL_KEY: string = '';
-
   notices$: Observable<Record<string, Notice>>;
 
   constructor(
@@ -36,7 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
     msal.onLoggedIn = token => {
       this.signalR.start(token).subscribe(() => {
         this.signalR.receiveMessage().subscribe(notice => {
-          const key = notice.data?.inboundBlobReference || this.SHARED_CHANNEL_KEY;
+          const key = notice.data?.inboundBlobReference || SHARED_CHANNEL_KEY;
           this.store.dispatch(appActions.addNotice({ key, notice }));
           if (notice.title == 'Upload Success') {
             this.store.dispatch(appActions.listBlobs({}));

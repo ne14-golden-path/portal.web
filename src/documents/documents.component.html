@@ -18,6 +18,6 @@
         No documents found!
     </div>
     <div class="footer">
-        <app-upload (selected)="onUploadSelected($event)"/>
+        <app-upload (selected)="onUploadSelected($event)" (invalid)="onUploadInvalid($event)"/>
     </div>
 </div>

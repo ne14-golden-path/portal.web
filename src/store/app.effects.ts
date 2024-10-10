@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import { catchError, debounce, debounceTime, interval, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 
 import { BlobsService } from '../documents/services/blobs.service';
 import { appActions } from './app.actions';
@@ -19,6 +19,9 @@ export class AppEffects {
   listBlobs$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(appActions.listBlobs),
+      // This debounce is immediate where user passes a specific page request
+      // Else (e.g. automated/reload) it waits a bit :) 
+      debounce(action => interval(action.request ? 0 : 600)),
       withLatestFrom(this.store.select(appSelectors.getBlobs)),
       switchMap(([action, currentPaging]) =>
         this.blobsService.listBlobs(action.request ?? currentPaging).pipe(
@@ -32,7 +35,7 @@ export class AppEffects {
   startPdfConversion$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(appActions.startPdfConversion),
-      switchMap(action =>
+      mergeMap(action =>
         this.blobsService.convertToPdf(action.file).pipe(
           map(ref => appActions.startPdfConversionSuccess({ ref })),
           catchError((error: any) => of(appActions.startPdfConversionFailure({ error }))),

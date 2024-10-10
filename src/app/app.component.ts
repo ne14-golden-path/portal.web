@@ -38,6 +38,9 @@ export class AppComponent implements OnInit, OnDestroy {
         this.signalR.receiveMessage().subscribe(notice => {
           const key = notice.data?.inboundBlobReference || this.SHARED_CHANNEL_KEY;
           this.store.dispatch(appActions.addNotice({ key, notice }));
+          if (notice.title == 'Upload Success') {
+            this.store.dispatch(appActions.listBlobs({}));
+          }
         });
       });
     }

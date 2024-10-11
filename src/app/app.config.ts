@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore, provideState } from '@ngrx/store';
@@ -9,6 +9,7 @@ import { routes } from './app.routes';
 import { provideSpaConfig } from '../config/spa-config.provider';
 import { AppEffects } from '../store/app.effects';
 import { appReducer } from '../store/app.reducer';
+import { httpNoticeInterceptor } from '../notices/http-notices.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +19,9 @@ export const appConfig: ApplicationConfig = {
     provideState('app', appReducer),
     provideEffects([AppEffects]),
     provideRouter(routes),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(
+      withInterceptorsFromDi(),
+      withInterceptors([httpNoticeInterceptor])),
     provideSpaConfig(),
   ],
 };

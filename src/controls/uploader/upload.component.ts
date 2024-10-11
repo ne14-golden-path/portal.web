@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 @Component({
@@ -14,6 +14,9 @@ export class UploadComponent {
   @ViewChild('ctrl')
   ctrl!: ElementRef<HTMLInputElement>;
 
+  @Input()
+  accept: string = '.*';
+
   @Output()
   selected = new EventEmitter<File[]>();
 
@@ -21,7 +24,6 @@ export class UploadComponent {
   invalid = new EventEmitter<string>();
 
   dragging: boolean = false;
-  accept: string = '.doc,.docx,.html';
 
   zoneClick() {
     this.ctrl.nativeElement.click();

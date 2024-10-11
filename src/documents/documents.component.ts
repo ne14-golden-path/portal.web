@@ -11,6 +11,7 @@ import { AppState } from "../store/app.state";
 import { appSelectors } from "../store/app.selectors";
 import { appActions } from "../store/app.actions";
 import { Notice, NoticeLevel, SHARED_CHANNEL_KEY } from "../notices/notice.model";
+import { SpaConfig } from "../config/spa-config.model";
 
 @Component({
     selector: 'app-documents',
@@ -28,10 +29,12 @@ export class DocumentsComponent {
 
   blobsRequest: PageRequest = { pageNumber: 1, pageSize: 10 };
   blobsResponse$: Observable<LazyPageResult<BlobMetaData>>;
+  pdfExtensions: string;
 
-  constructor(private store: Store<AppState>) {
+  constructor(spaConfig: SpaConfig, private store: Store<AppState>) {
     this.blobsResponse$ = this.store.select(appSelectors.getBlobs);
     this.requestCurrentPage();
+    this.pdfExtensions = spaConfig.extensionsForPdf;
   }
 
   download(blobReference: string) {

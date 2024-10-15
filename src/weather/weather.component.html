@@ -1,6 +1,6 @@
 <h1>Weather</h1>
 
-<button (click)="getForecast()">Get Forecast!</button>
+<input type="button" (click)="getForecast()" value="Get Forecast!"/>
 
 <div *ngFor="let f of forecasts">
     <span>{{f.summary}}</span>

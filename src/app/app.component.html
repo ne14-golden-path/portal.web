@@ -1,11 +1,13 @@
-<a [routerLink]="['/']">Home</a>
-<a [routerLink]="['/documents']">Documents</a>
-<a [routerLink]="['/weather']">Weather</a>
+<div class="menu">
+  <a [routerLink]="['/']">Home</a>
+  <a [routerLink]="['/documents']">Documents</a>
+  <a [routerLink]="['/weather']">Weather</a>
 
-<input type="checkbox" (input)="onToggleDarkMode()" />
+  <input type="button" *ngIf="!msal.loginDisplay" (click)="msal.login()" value="Log in"/>
+  <input type="button" *ngIf="msal.loginDisplay" (click)="msal.logout()" value="Log out"/>
 
-<button *ngIf="!msal.loginDisplay" (click)="msal.login()">Log in</button>
-<button *ngIf="msal.loginDisplay" (click)="msal.logout()">Log out</button>
+  <app-switch (change)="onToggleDarkMode()"/>
+</div>
 
 <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
 <router-outlet *ngIf="!msal.isIframe"/>

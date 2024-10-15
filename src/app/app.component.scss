@@ -1,3 +1,12 @@
 a {
   padding: calc(2 * var(--space));
 }
+
+.menu {
+  display: flex;
+  align-items: center;
+}
+
+app-switch {
+  margin: 0 1rem;
+}

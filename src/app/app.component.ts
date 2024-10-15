@@ -11,11 +11,12 @@ import { ToastComponent } from "../controls/toast/toast.component";
 import { AppState } from "../store/app.state";
 import { appActions } from "../store/app.actions";
 import { appSelectors } from "../store/app.selectors";
+import { SwitchComponent } from "../controls/switch/switch.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ CommonModule, RouterModule, ToastComponent ],
+  imports: [ CommonModule, RouterModule, ToastComponent, SwitchComponent ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

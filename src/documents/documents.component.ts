@@ -15,12 +15,11 @@ import { SpaConfig } from "../config/spa-config.model";
 
 @Component({
     selector: 'app-documents',
-    standalone: true,
     imports: [
-      CommonModule,
-      FormsModule,
-      RouterModule,
-      UploadComponent,
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        UploadComponent,
     ],
     templateUrl: './documents.component.html',
     styleUrl: './documents.component.scss'

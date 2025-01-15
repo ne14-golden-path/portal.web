@@ -14,11 +14,10 @@ import { appSelectors } from "../store/app.selectors";
 import { SwitchComponent } from "../controls/switch/switch.component";
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [ CommonModule, RouterModule, ToastComponent, SwitchComponent ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    imports: [CommonModule, RouterModule, ToastComponent, SwitchComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit, OnDestroy {
 

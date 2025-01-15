@@ -3,11 +3,10 @@ import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@
 import { FormsModule } from "@angular/forms";
 
 @Component({
-  selector: 'app-upload',
-  standalone: true,
-  imports: [ CommonModule, FormsModule ],
-  templateUrl: './upload.component.html',
-  styleUrl: './upload.component.scss'
+    selector: 'app-upload',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './upload.component.html',
+    styleUrl: './upload.component.scss'
 })
 export class UploadComponent {
 

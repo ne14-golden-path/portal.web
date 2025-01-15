@@ -9,11 +9,10 @@ import { SpaConfig } from "../config/spa-config.model";
 
 @Component({
     selector: 'app-weather',
-    standalone: true,
     imports: [
-      CommonModule,
-      FormsModule,
-      RouterModule,
+        CommonModule,
+        FormsModule,
+        RouterModule,
     ],
     templateUrl: './weather.component.html',
     styleUrl: './weather.component.scss'

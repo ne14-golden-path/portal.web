@@ -2,11 +2,10 @@ import { CommonModule } from "@angular/common";
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from "@angular/core";
 
 @Component({
-  selector: 'app-switch',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './switch.component.html',
-  styleUrl: './switch.component.scss'
+    selector: 'app-switch',
+    imports: [CommonModule],
+    templateUrl: './switch.component.html',
+    styleUrl: './switch.component.scss'
 })
 export class SwitchComponent implements OnChanges {
   
